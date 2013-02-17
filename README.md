@@ -31,7 +31,7 @@ Install using easy_install like so:
     sudo easy_install requests bottle
 
 For profile images to work you also need to be able to access
-http://dir.wgtn.cat-it.co.nz/
+http://directory.wgtn.cat-it.co.nz/
 
 
 Config
@@ -48,7 +48,7 @@ your own data.
 
 
 To retrieve your WRMS3_SECRET_HASH, visit a WRMS3 report and grab the
-has contained in the 'wrms3_auth' cookie.
+hash contained in the 'wrms3_auth' cookie.
 
 
 License
