@@ -137,7 +137,8 @@ def index():
                 html += '<h3><abbr class="timeago" title="%s">%s</abbr> <strong>%s</strong> changed the status to "<strong>%s</strong>"</h3>' % \
                             (timeoccured, timeoccured, d['user'], status[d['note']])
             else:
-                html += '<h3><abbr class="timeago" title="%s">%s</abbr> <strong>%s</strong> wrote:</h3>' % (timeoccured, timeoccured, d['user'])
+                verb = 'created this WR' if d['type'] == 'created' else 'wrote'
+                html += '<h3><abbr class="timeago" title="%s">%s</abbr> <strong>%s</strong> %s:</h3>' % (timeoccured, timeoccured, d['user'], verb)
                 html += '<img alt="&nbsp;" src="http://directory.wgtn.cat-it.co.nz/staff_photos/%s.jpg" />' % img_name
                 html += '<div class="content"><p>'+d['note'].replace('\n', '<br>')+'</p></div>'
             html += '</li>'
@@ -186,7 +187,7 @@ def get_data():
         conn.commit()
 
     # Load latest active WRs
-    wrms = wrms_load('api2/report?report_type=request&interested_users=%d&display_fields=request_id,system_name,system_code,last_activity_epoch,status_desc,brief&order_by=last_activity_epoch&order_direction=desc' % config.userid)
+    wrms = wrms_load('api2/report?report_type=request&interested_users=%d&display_fields=request_id,system_name,system_code,last_activity_epoch,detailed,status_desc,brief,request_on_epoch,created_by_fullname&order_by=last_activity_epoch&order_direction=desc' % config.userid)
 
     for wr in wrms['response']['results']:
         changed = False
@@ -202,6 +203,10 @@ def get_data():
                 print 'Insert %d' % wr['request_id']
                 c.execute('INSERT INTO wr VALUES (?, ?, ?, ?, ?, ?)',
                         [wr['request_id'], wr['brief'], wr['system_code'], wr['system_name'], wr['last_activity_epoch'], wr['status_desc']])
+                conn.commit()
+
+                c.execute('INSERT INTO activity VALUES (?, ?, ?, ?, ?)',
+                        [wr['request_id'], 'created', wr['detailed'], wr['created_by_fullname'], wr['request_on_epoch']])
                 conn.commit()
                 changed = True
 
