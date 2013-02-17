@@ -124,7 +124,7 @@ def index():
 
                 html += ' <a href="#top" style="float: right;">Top</a>'
                 html += ' <a href="#%d_%d" title="Newer WR changes">&uarr;</a>' % (d['request_id'], anchor_count - 1)
-                html += ' <a href="#%d_%d" title="Older WR changed">&darr;</a>' % (d['request_id'], anchor_count + 1)
+                html += ' <a href="#%d_%d" title="Older WR changes">&darr;</a>' % (d['request_id'], anchor_count + 1)
 
                 html += '</h2>'
                 first = False
@@ -254,4 +254,4 @@ get_data()
 print
 
 bottle.debug(True)
-bottle.run(host='localhost', port=8080)
+bottle.run(host='192.168.2.245', port=8080)
