@@ -161,7 +161,12 @@ def wrms_load(reporturl):
     host = 'https://wrms.catalyst.net.nz/'
     cookies = {'wrms3_auth': config.secret}
     r = requests.get(host+reporturl, cookies=cookies)
-    return r.json
+
+    try:
+        return r.json
+    except Exception:
+        import json
+        return json.loads(r.text)
 
 
 def get_data():
